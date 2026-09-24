@@ -1,0 +1,20 @@
+{
+  "name": "dar-alef-new",
+  "version": "1.0.0",
+  "description": "Dar Al-Alef factory system - clean V2 (node:http, zero deps)",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "clean": "node -e \"const fs=require('fs'),path=require('path');let n=0;function w(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory()){if(e.name==='node_modules'||e.name==='.git')continue;w(p);}else if(/\\.bak(-.*)?$|\\.tmp$/.test(e.name)){fs.unlinkSync(p);n++;}}}w(__dirname);w(path.join(__dirname,'..','frontend'));console.log('cleaned '+n+' files')\"",
+    "check": "node --check server.js && node --check src/auth.js && node --check src/master.js && node --check scripts/backup-data.js",
+    "check:frontend": "node --check ../frontend/shared/utils/layout.js && node --check ../frontend/shared/utils/api.js && node --check ../frontend/shared/utils/ui.js && node --check ../frontend/sw.js",
+    "backup": "node scripts/backup-data.js manual"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}

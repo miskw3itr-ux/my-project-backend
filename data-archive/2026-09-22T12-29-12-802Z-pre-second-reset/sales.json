@@ -1,0 +1,14 @@
+{
+  "seq": {
+    "invoice": 9,
+    "invoice_num": 9,
+    "receipt": 4,
+    "receipt_num": 4,
+    "ret": 1,
+    "ret_num": 1
+  },
+  "invoices": [],
+  "receipts": [],
+  "returns": [],
+  "cmdorders": []
+}

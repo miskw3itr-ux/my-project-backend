@@ -1,0 +1,13 @@
+{
+  "seq": {
+    "order": 1,
+    "order_num": 1,
+    "deposit": 1,
+    "confirmation": 1,
+    "audit": 1
+  },
+  "orders": [],
+  "deposits": [],
+  "confirmations": [],
+  "audit": []
+}

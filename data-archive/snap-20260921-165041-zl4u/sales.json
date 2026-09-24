@@ -1,0 +1,13 @@
+{
+  "seq": {
+    "invoice": 2,
+    "invoice_num": 2,
+    "receipt": 1,
+    "receipt_num": 1,
+    "ret": 1,
+    "ret_num": 1
+  },
+  "invoices": [],
+  "receipts": [],
+  "returns": []
+}
