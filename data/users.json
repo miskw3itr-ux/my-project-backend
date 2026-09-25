@@ -2,8 +2,8 @@
   "seq": {
     "user": 8,
     "role": 1,
-    "session": 142,
-    "event": 184
+    "session": 146,
+    "event": 192
   },
   "users": [
     {
@@ -369,13 +369,13 @@
   ],
   "sessions": [
     {
-      "id": 141,
-      "token": "e698976248f712a65d6530979d6dd861c2f08e53747726ac35b0591300bb9ce0",
+      "id": 145,
+      "token": "d7682f9234ebbb5092698abd42a88023c97dbeef10168ec9f1cebf02e65f5370",
       "user_id": 1,
       "username": "admin",
       "role": "admin",
-      "created": "2026-09-25T10:49:34.219Z",
-      "expires": "2026-09-25T22:49:34.219Z",
+      "created": "2026-09-25T13:44:24.317Z",
+      "expires": "2026-09-26T01:44:24.317Z",
       "ip": "::1",
       "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36"
     }
@@ -1844,6 +1844,70 @@
       "detail": "admin",
       "ip": "::1",
       "at": "2026-09-25T10:49:34.219Z"
+    },
+    {
+      "id": 184,
+      "kind": "login_kick",
+      "username": "admin",
+      "detail": "أُخرجت 1 جلسة بتأكيد الدخول الجديد",
+      "ip": "::1",
+      "at": "2026-09-25T13:32:14.321Z"
+    },
+    {
+      "id": 185,
+      "kind": "login_ok",
+      "username": "admin",
+      "detail": "admin",
+      "ip": "::1",
+      "at": "2026-09-25T13:32:14.323Z"
+    },
+    {
+      "id": 186,
+      "kind": "logout",
+      "username": "admin",
+      "detail": "",
+      "ip": "",
+      "at": "2026-09-25T13:32:14.860Z"
+    },
+    {
+      "id": 187,
+      "kind": "login_ok",
+      "username": "admin",
+      "detail": "admin",
+      "ip": "::1",
+      "at": "2026-09-25T13:33:43.220Z"
+    },
+    {
+      "id": 188,
+      "kind": "login_kick",
+      "username": "admin",
+      "detail": "أُخرجت 1 جلسة بتأكيد الدخول الجديد",
+      "ip": "::1",
+      "at": "2026-09-25T13:43:00.505Z"
+    },
+    {
+      "id": 189,
+      "kind": "login_ok",
+      "username": "admin",
+      "detail": "admin",
+      "ip": "::1",
+      "at": "2026-09-25T13:43:00.507Z"
+    },
+    {
+      "id": 190,
+      "kind": "logout",
+      "username": "admin",
+      "detail": "",
+      "ip": "",
+      "at": "2026-09-25T13:43:00.599Z"
+    },
+    {
+      "id": 191,
+      "kind": "login_ok",
+      "username": "admin",
+      "detail": "admin",
+      "ip": "::1",
+      "at": "2026-09-25T13:44:24.317Z"
     }
   ],
   "fails": []

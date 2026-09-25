@@ -669,6 +669,11 @@ const Master = {
   _addParty(col, logEntity, b, ctx) {
     const d = store.load();
     if (!hasText(b.name)) throw Object.assign(new Error('الاسم مطلوب'), { code: 400 });
+    // منع التكرار: الاسم موجود في الجدول — أدخل اسماً مغايراً
+    const dupLabel = col === 'suppliers' ? 'المورد' : col === 'customers' ? 'الزبون' : 'العامل';
+    if (d[col].some(x => String(x.name || '').trim() === String(b.name).trim())) {
+      throw Object.assign(new Error('هذا الاسم مستعمل («' + String(b.name).trim() + '») — أدخل اسماً مغايراً أو عدّل بطاقة ' + dupLabel + ' الموجودة'), { code: 400 });
+    }
     const openField = col === 'workers' ? 'opening_balance' : 'opening_debt';
     const codeKey = col === 'suppliers' ? 'suppliers' : col === 'customers' ? 'customers' : 'workers';
     const phone = checkPhone(b.phone);
@@ -777,7 +782,14 @@ const Master = {
       if (b.nis !== undefined) r.nis = fiscalNum(b.nis, 'N.I.S');
       if (col === 'suppliers' && b.bank !== undefined) r.bank = fiscalNum(b.bank, 'البنك', 60);
     }
-    if (b.name !== undefined) { if (!hasText(b.name)) throw Object.assign(new Error('الاسم مطلوب'), { code: 400 }); r.name = b.name.trim(); }
+    if (b.name !== undefined) {
+      if (!hasText(b.name)) throw Object.assign(new Error('الاسم مطلوب'), { code: 400 });
+      const dupLabel = col === 'suppliers' ? 'المورد' : col === 'customers' ? 'الزبون' : 'العامل';
+      if (d[col].some(x => x.id !== r.id && String(x.name || '').trim() === String(b.name).trim())) {
+        throw Object.assign(new Error('هذا الاسم مستعمل («' + String(b.name).trim() + '») — أدخل اسماً مغايراً'), { code: 400 });
+      }
+      r.name = b.name.trim();
+    }
     if (b.phone !== undefined) {
       const ph = checkPhone(b.phone);
       if (col === 'customers' && (!ph || ph.length < 9 || ph.length > 15)) throw Object.assign(new Error('هاتف الزبون إجباري: 9-15 رقماً'), { code: 400 });
@@ -917,6 +929,9 @@ const Master = {
     if (!hasText(b.name)) throw Object.assign(new Error('اسم المخزن مطلوب'), { code: 400 });
     if (b.type && !['مواد أولية', 'منتج نهائي'].includes(b.type)) throw Object.assign(new Error('نوع المخزن: مواد أولية / منتج نهائي'), { code: 400 });
     const d = store.load();
+    if (d.warehouses.some(x => String(x.name || '').trim() === String(b.name).trim())) {
+      throw Object.assign(new Error('هذا الاسم مستعمل («' + String(b.name).trim() + '») — أدخل اسماً مغايراً'), { code: 400 });
+    }
     const row = { id: d.seq.warehouse++, code: nextCode(d, 'warehouses', d.warehouses, b.code), name: b.name.trim(), place: (b.place || '').trim(), type: b.type || 'مواد أولية', opening_stock: toNum(b.opening_stock, 'المخزون الافتتاحي'), fixed: false, created_at: now(), updated_at: now() };
     d.warehouses.push(row);
     audit(d, 'add', 'warehouse', row.id, ctx.user, ctx.role);
@@ -927,7 +942,13 @@ const Master = {
     const d = store.load();
     const r = d.warehouses.find(x => x.id === id);
     if (!r) throw Object.assign(new Error('غير موجود'), { code: 404 });
-    if (b.name !== undefined) { if (!hasText(b.name)) throw Object.assign(new Error('الاسم مطلوب'), { code: 400 }); r.name = b.name.trim(); }
+    if (b.name !== undefined) {
+      if (!hasText(b.name)) throw Object.assign(new Error('الاسم مطلوب'), { code: 400 });
+      if (d.warehouses.some(x => x.id !== r.id && String(x.name || '').trim() === String(b.name).trim())) {
+        throw Object.assign(new Error('هذا الاسم مستعمل («' + String(b.name).trim() + '») — أدخل اسماً مغايراً'), { code: 400 });
+      }
+      r.name = b.name.trim();
+    }
     if (b.place !== undefined) r.place = String(b.place || '').trim();
     if (b.type !== undefined) { if (!['مواد أولية', 'منتج نهائي'].includes(b.type)) throw Object.assign(new Error('نوع غير صالح'), { code: 400 }); r.type = b.type; }
     if (b.opening_stock !== undefined) r.opening_stock = toNum(b.opening_stock, 'المخزون الافتتاحي');
@@ -1023,6 +1044,10 @@ const Master = {
   addFormula(b, ctx) {
     if (!hasText(b.name)) throw Object.assign(new Error('اسم التركيبة مطلوب'), { code: 400 });
     const d = store.load();
+    // التركيبة الجديدة باسم مستعمل مرفوضة — النسخ من نفس الاسم تُنشأ بزر «نسخة جديدة» فقط
+    if (d.formulas_ref.some(x => String(x.name || '').trim() === String(b.name).trim())) {
+      throw Object.assign(new Error('هذا الاسم مستعمل («' + String(b.name).trim() + '») — أدخل اسماً مغايراً أو أنشئ نسخة جديدة من التركيبة الموجودة'), { code: 400 });
+    }
     const date = this._validEffDate(b.date);
     const comps = this._cleanFormulaItems(d, b.items);
     const row = {
