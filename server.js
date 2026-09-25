@@ -309,9 +309,11 @@ const server = http.createServer(async (req, res) => {
       const ip = (req.socket && req.socket.remoteAddress) || '';
       const ua = (req.headers && req.headers['user-agent']) || '';
       try {
-        return send(res, 200, Auth.login(b.username, b.password, ip, ua));
+        return send(res, 200, Auth.login(b.username, b.password, ip, ua, { force: b.force }));
       } catch (e) {
-        return send(res, (e && e.code) || 500, { error: (e && e.message) || 'خطأ داخلي' });
+        const out = { error: (e && e.message) || 'خطأ داخلي' };
+        if (e && e.details && typeof e.details === 'object') Object.assign(out, e.details);
+        return send(res, (e && e.code) || 500, out);
       }
     }
     if (p === '/api/logout' && req.method === 'POST') {

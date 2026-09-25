@@ -222,7 +222,7 @@ const Auth = {
     return { roles: d.roles.length, users: d.users.length };
   },
 
-  login(username, password, ip, ua) {
+  login(username, password, ip, ua, opts) {
     const d = load();
     const name = canonUser(username);
     pruneFails(d);
@@ -251,6 +251,33 @@ const Auth = {
       if (FACTORY[u.username] && !u.must_change && verifyPw(FACTORY[u.username], u)) u.must_change = true;
     } catch {}
     d.fails = d.fails.filter(f => f.username !== name);
+    // جلسة واحدة لكل حساب: إن كانت هناك جلسة نشطة (غير منتهية) لنفس المستخدم
+    // نرفض الدخول الجديد برمز 409 مع وصف الجلسة القائمة — والدخول لا يتم إلا
+    // بتأكيد صريح (force) يُخرج الجلسة القديمة أولاً. كلمة المرور صحيحة هنا،
+    // لذلك لا تُحتسب محاولة فاشلة ولا تُقفل الحساب.
+    const nowMs = Date.now();
+    const live = d.sessions.filter(s => s && s.user_id === u.id && Date.parse(s.expires) > nowMs);
+    const force = !!(opts && (opts.force === true || opts.force === 'true' || opts.force === 1 || opts.force === '1'));
+    if (live.length && !force) {
+      const cur = live.slice().sort((a, b) => (String(a.created) < String(b.created) ? 1 : -1))[0];
+      event(d, 'login_busy', u.username, 'جلسة نشطة من ' + (cur.ip || '؟'), ip);
+      db.save(d);
+      const e = new Error('هذا الحساب مستعمل الآن على جهاز آخر — أكّد إخراج الجلسة الأخرى للدخول');
+      e.code = 409;
+      e.details = {
+        needConfirm: true,
+        sessions: live.slice(0, 3).map(s => ({
+          ip: s.ip || '', ua: String(s.ua || '').slice(0, 80),
+          created: String(s.created || '').slice(0, 16).replace('T', ' '),
+          expires: String(s.expires || '').slice(0, 16).replace('T', ' ')
+        }))
+      };
+      throw e;
+    }
+    if (live.length && force) {
+      d.sessions = d.sessions.filter(s => !(s && s.user_id === u.id));
+      event(d, 'login_kick', u.username, 'أُخرجت ' + live.length + ' جلسة بتأكيد الدخول الجديد', ip);
+    }
     const token = crypto.randomBytes(32).toString('hex');
     d.sessions.push({
       id: d.seq.session++, token, user_id: u.id, username: u.username, role: u.role,

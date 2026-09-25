@@ -199,6 +199,31 @@
       "created_by": "admin",
       "created_at": "2026-09-24T10:55:56.923Z",
       "updated_at": "2026-09-24T12:06:59.894Z"
+    },
+    {
+      "id": 10,
+      "num": "BC-2026-010",
+      "supplier_id": 4,
+      "supplier_name": "حاج بوبكر",
+      "date": "2026-09-24",
+      "lines": [
+        {
+          "item_id": 3,
+          "item_name": "النخالة",
+          "unit": "قنطار",
+          "qty": 100,
+          "price": 4000,
+          "total": 400000
+        }
+      ],
+      "total": 400000,
+      "status": "معتمدة",
+      "reject_reason": "",
+      "decided_by": "admin",
+      "decided_at": "2026-09-24T21:40:11.259Z",
+      "created_by": "admin",
+      "created_at": "2026-09-24T21:32:43.870Z",
+      "updated_at": "2026-09-24T21:40:11.259Z"
     }
   ],
   "deposits": [
@@ -285,6 +310,37 @@
       "note": "",
       "created_by": "admin",
       "created_at": "2026-09-24T10:56:29.835Z"
+    },
+    {
+      "id": 7,
+      "order_id": 10,
+      "order_num": "BC-2026-010",
+      "supplier_id": 4,
+      "supplier_name": "حاج بوبكر",
+      "date": "2026-09-24",
+      "method": "نقدي",
+      "amount": 400000,
+      "account": "محمد",
+      "note": "",
+      "created_by": "admin",
+      "created_at": "2026-09-24T21:50:22.000Z"
+    },
+    {
+      "id": 8,
+      "num": "PAY-2026-001",
+      "order_id": null,
+      "order_num": "",
+      "supplier_id": 4,
+      "supplier_name": "حاج بوبكر",
+      "pay_type": "دفع لمورد",
+      "date": "2026-09-24",
+      "method": "نقدي",
+      "amount": 277500,
+      "account": "محمد",
+      "check": null,
+      "note": "",
+      "created_by": "admin",
+      "created_at": "2026-09-24T21:51:00.765Z"
     }
   ],
   "confirmations": [
@@ -535,12 +591,12 @@
     }
   ],
   "seq": {
-    "order": 10,
-    "order_num": 10,
-    "deposit": 7,
+    "order": 11,
+    "order_num": 11,
+    "deposit": 9,
     "confirmation": 8,
-    "audit": 40,
-    "payment_num": 1
+    "audit": 45,
+    "payment_num": 2
   },
   "audit": [
     {
@@ -854,6 +910,46 @@
       "by": "admin",
       "role": "admin",
       "at": "2026-09-24T12:06:59.895Z"
+    },
+    {
+      "id": 40,
+      "action": "add-order",
+      "ref_id": 10,
+      "by": "admin",
+      "role": "admin",
+      "at": "2026-09-24T21:32:43.870Z"
+    },
+    {
+      "id": 41,
+      "action": "submit-order",
+      "ref_id": 10,
+      "by": "admin",
+      "role": "admin",
+      "at": "2026-09-24T21:40:01.840Z"
+    },
+    {
+      "id": 42,
+      "action": "decide-order",
+      "ref_id": 10,
+      "by": "admin",
+      "role": "admin",
+      "at": "2026-09-24T21:40:11.259Z"
+    },
+    {
+      "id": 43,
+      "action": "add-deposit",
+      "ref_id": 7,
+      "by": "admin",
+      "role": "admin",
+      "at": "2026-09-24T21:50:22.001Z"
+    },
+    {
+      "id": 44,
+      "action": "add-payment",
+      "ref_id": 8,
+      "by": "admin",
+      "role": "admin",
+      "at": "2026-09-24T21:51:00.765Z"
     }
   ]
 }

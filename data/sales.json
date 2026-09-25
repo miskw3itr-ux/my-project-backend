@@ -2,8 +2,8 @@
   "seq": {
     "invoice": 8,
     "invoice_num": 8,
-    "receipt": 8,
-    "receipt_num": 8,
+    "receipt": 9,
+    "receipt_num": 9,
     "ret": 2,
     "ret_num": 2,
     "cmdorder": 11,
@@ -348,6 +348,23 @@
       "client_key": "rmufhtzfebg2e",
       "created_by": "admin",
       "created_at": "2026-09-24T12:13:45.302Z"
+    },
+    {
+      "id": 8,
+      "num": "RC-2026-008",
+      "invoice_id": null,
+      "invoice_num": "",
+      "customer_id": 2,
+      "customer_name": "وليد",
+      "pay_type": "دفع زبون",
+      "date": "2026-09-25",
+      "method": "نقدي",
+      "amount": 10000,
+      "account": "محمد",
+      "check": null,
+      "note": "",
+      "created_by": "admin",
+      "created_at": "2026-09-25T09:55:16.238Z"
     }
   ],
   "returns": [
